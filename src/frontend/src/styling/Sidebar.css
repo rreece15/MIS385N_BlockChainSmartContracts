@@ -1,0 +1,10 @@
+.sidebar {
+    background-color: #1e1e1e;
+    width: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  
+  /* Additional styles for sidebar elements like filters would go here */
+  
