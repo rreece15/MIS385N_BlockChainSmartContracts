@@ -11,6 +11,11 @@ Includes:
 
 shell export pk=private_key
 
+pinata gateway url: https://yellow-characteristic-magpie-540.mypinata.cloud
+
+See 'Sell NFT Integrations' here for more setup
+https://www.youtube.com/watch?v=y6JfVdcJh1k&ab_channel=Alchemy
+
 This repository contains a sample project that you can use as the starting point
 for your Ethereum project. It's also a great fit for learning the basics of
 smart contract development.

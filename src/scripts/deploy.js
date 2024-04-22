@@ -2,6 +2,9 @@
 // yours, or create new ones.
 
 const path = require("path");
+const { ethers } = require("hardhat");
+const hre = require("hardhat");
+const fs = require("fs");
 
 async function main() {
   // This is just a convenience check
@@ -19,14 +22,20 @@ async function main() {
     "Deploying the contracts with the account:",
     await deployer.getAddress()
   );
+  const balance = await deployer.getBalance();
+  console.log("Account balance:", (balance).toString());
+  const Marketplace = await hre.ethers.getContractFactory("NFTMarket - NAME");
+  // const Token = await ethers.getContractFactory("Token");
+  // const token = await Token.deploy();
+  // await token.deployed();
 
-  console.log("Account balance:", (await deployer.getBalance()).toString());
-
-  const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  await token.deployed();
+  await Marketplace.deployed();
 
   console.log("Token address:", token.address);
+  const data = {
+    address: Marketplace.address,
+    abi: JSON.parse(Marketplace.interface.format('json')),
+  }
 
   // We also save the contract's artifacts and address in the frontend directory
   saveFrontendFiles(token);
@@ -43,6 +52,11 @@ function saveFrontendFiles(token) {
   fs.writeFileSync(
     path.join(contractsDir, "contract-address.json"),
     JSON.stringify({ Token: token.address }, undefined, 2)
+  );
+
+  fs.writeFileSync(
+    path.join(contractsDir, "Marketplace.json"),
+    JSON.stringify(data)
   );
 
   const TokenArtifact = artifacts.readArtifactSync("Token");
