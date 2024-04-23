@@ -9,6 +9,8 @@ Includes:
 - etherscan
 - gas reporter
 
+on create token - get uri from pinata,create token gunction, whatever else is needed
+
 shell export pk=private_key
 
 pinata gateway url: https://yellow-characteristic-magpie-540.mypinata.cloud
