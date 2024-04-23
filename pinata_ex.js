@@ -1,4 +1,6 @@
 export default function SellNFT () {
+
+    // this func uploads file, but more generally i included it to show how to incorporate function to JS
     async function OnChangeFile(e) {
         var file = e.target.files[0];
 
@@ -13,6 +15,39 @@ export default function SellNFT () {
         }
     }
 
+
+    // example of displaying image from Ipfs
+    function NFTTile (data) {
+        const newTo = {
+            pathname:"/nftPage/"+data.data.tokenId
+        }
+    
+        const IPFSUrl = GetIpfsUrlFromPinata(data.data.image);
+    
+        return (
+            <Link to={newTo}>
+            <div className="border-2 ml-12 mt-5 mb-12 flex flex-col items-center rounded-lg w-48 md:w-72 shadow-2xl">
+                <img src={IPFSUrl} alt="" className="w-72 h-80 rounded-lg object-cover" crossOrigin="anonymous" />
+                <div className= "text-white w-full p-2 bg-gradient-to-t from-[#454545] to-transparent rounded-lg pt-5 -mt-20">
+                    <strong className="text-xl">{data.data.name}</strong>
+                    <p className="display-inline">
+                        {data.data.description}
+                    </p>
+                </div>
+            </div>
+            </Link>
+        )
+    }
+
+    // included from above
+    export const GetIpfsUrlFromPinata = (pinataUrl) => {
+        var IPFSUrl = pinataUrl.split("/");
+        const lastIndex = IPFSUrl.length;
+        IPFSUrl = "https://ipfs.io/ipfs/"+IPFSUrl[lastIndex-1];
+        return IPFSUrl;
+    };
+
+    // example of uploading json to ipfs
     async function uploadMetadataToIPFS() {
         const {name,description,price} = formParams;
 
@@ -35,6 +70,7 @@ export default function SellNFT () {
         }
     }
 
+    // example of using WebJS and ethers for architecture flow
     async function listNFT(e) {
         e.preventDefault();
 
