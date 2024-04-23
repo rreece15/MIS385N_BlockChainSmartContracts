@@ -226,11 +226,11 @@ export class Dapp extends React.Component {
     );
     
     // TODO: ###############################################################################################################
-    this._marketplace = new ethers.Contract(
-      contractAddress.MarketPlace,
-      MarketPlaceArtifact.abi,
-      this._provider.getSigner(0)
-    );
+    // this._marketplace = new ethers.Contract(
+    //   contractAddress.MarketPlace,
+    //   MarketPlaceArtifact.abi,
+    //   this._provider.getSigner(0)
+    // );
   }
 
   // The next two methods are needed to start and stop polling data. While
