@@ -1,0 +1,50 @@
+/* Sidebar.css */
+.sidebar {
+  background-color: #1e1e1e;
+  width: 250px;
+  padding: 1rem;
+  height: 100vh; /* Make the sidebar full-height */
+  color: white;
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable scrolling within the sidebar if content overflows */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+}
+
+.content-switch {
+  margin-bottom: 20px;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #333;
+  border: none;
+  color: white;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.filter-section h5 {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.filter-section button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.filter-options label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter-options input[type='checkbox'] {
+  margin-right: 10px;
+}

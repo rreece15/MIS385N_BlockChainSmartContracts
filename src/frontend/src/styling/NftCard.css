@@ -1,0 +1,23 @@
+.nft-card {
+    background-color: #333;
+    color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .nft-card:hover {
+    transform: translateY(-0.25rem);
+  }
+  
+  .nft-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  .nft-info {
+    padding: 0.5rem;
+    text-align: center;
+  }
+  

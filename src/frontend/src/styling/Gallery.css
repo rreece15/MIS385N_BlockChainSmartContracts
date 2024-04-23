@@ -1,0 +1,14 @@
+.gallery-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: black;
+  }
+  
+  .nft-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+  }
