@@ -19,7 +19,7 @@ const Gallery = () => {
           <Sidebar />
           <div className="nft-content">
             {nftDummyData.map(nft => (
-              <NftCard key={nft.id} nft={nft} />
+              <NftCard key={nft.id} nft={nft}/>
             ))}
           </div>
         </div>

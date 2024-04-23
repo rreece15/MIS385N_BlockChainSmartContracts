@@ -1,0 +1,46 @@
+/*ItemPage.css */
+.nft-detail-page {
+    padding: 1rem; /* Match Gallery padding for consistency */
+    color: white; /* Assuming the gallery also uses white text */
+    background-color: #121212; /* Match background for consistency */
+    min-height: 100vh; /* Full height */
+  }
+  
+  .nft-detail-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+    background-color: #333; /* For a card-like appearance */
+    border-radius: 8px;
+  }
+  
+  .back-to-gallery {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #4CAF50; /* Use a color that stands out but fits the theme */
+    text-decoration: none; /* No underline */
+  }
+  
+  .back-to-gallery:hover {
+    text-decoration: underline; /* Simple hover effect */
+  }
+  
+  .nft-detail img {
+    max-width: 100%;
+    border-radius: 8px; /* Rounded corners for the image */
+  }
+  
+  button {
+    background-color: #4CAF50; /* Matching button style with the gallery */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  button:hover {
+    background-color: #45a049; /* Darker shade on hover */
+  }
+  
