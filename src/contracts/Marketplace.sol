@@ -1,22 +1,20 @@
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.20;
 
 import "hardhat/console.sol";
-// should be able to ignore failed dependency - problem w VsCode handling solidity dependencies
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 
 // note - might need to make a separate contract for users to implement IERC1155Receiver; we cannot transfer to an address that does not implement
 
-contract MarketPlace is ERC1155, IERC1155Receiver {
-    using Counters for Counters.Counter;
+contract Marketplace is ERC1155, IERC1155Receiver {
+    // using Counters for Counters.Counter;
 
     // tokenIds are assigned sequntially
-    Counters.Counter private _tokenIds;
+    uint256 private _tokenIds;
     // keeps track of saleCount
-    Counters.Counter private _itemsSold;
+    uint256 private _itemsSold;
 
     address payable owner;
     uint256 publishPrice = 0.001 ether;
@@ -56,6 +54,8 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
     // constructor sets owner of marketplace
     constructor() ERC1155("Unused") {
         owner = payable(msg.sender);
+        _tokenIds = 0;
+        _itemsSold = 0;
     }
 
     // updates publishing price for media
@@ -71,7 +71,7 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
 
     // public returns media map from most recently uploaded media
     function getLatestIdToMedia() public view returns (Media memory) {
-        uint256 currentTokenId = _tokenIds.current();
+        uint256 currentTokenId = _tokenIds;
         return idToMedia[currentTokenId];
     }
 
@@ -84,7 +84,7 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
 
     // return tokenId of current token
     function getCurrentToken() public view returns (uint256) {
-        return _tokenIds.current();
+        return _tokenIds;
     }
 
     // create new Media; mints and updates token counters
@@ -97,8 +97,8 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
         require(price > 0, "price must be positive");
         require(amount > 0, "cannot create 0 instances");
 
-        _tokenIds.increment();
-        uint256 currentTokenId = _tokenIds.current();
+        _tokenIds++;
+        uint256 currentTokenId = _tokenIds;
         _mint(msg.sender, currentTokenId, 1, "");
         _setTokenURI(currentTokenId, tokenURI);
 
@@ -186,7 +186,7 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
 
     // return all tokens as array of Media struct
     function getAllTokens() public view returns (Media[] memory) {
-        uint nftCount = _tokenIds.current();
+        uint nftCount = _tokenIds;
         Media[] memory tokens = new Media[](nftCount);
 
         uint currentIndex = 0;
@@ -203,7 +203,7 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
 
     // return tokens owned by message sender
     function getMyTokens() public view returns (Media[] memory) {
-        uint totalItemCount = _tokenIds.current();
+        uint totalItemCount = _tokenIds;
         uint itemCount = 0;
         uint currentIndex = 0;
 
@@ -234,7 +234,7 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
 
     // return tokens owned by message sender
     function getAvailableTokens() public view returns (Media[] memory) {
-        uint totalItemCount = _tokenIds.current();
+        uint totalItemCount = _tokenIds;
         uint itemCount = 0;
         uint currentIndex = 0;
 
@@ -276,7 +276,7 @@ contract MarketPlace is ERC1155, IERC1155Receiver {
             amount; // = true;
         idToMedia[tokenId].seller = payable(msg.sender);
         for (uint256 i = 0; i < amount; i++) {
-            _itemsSold.increment();
+            _itemsSold++;
         }
 
         transfer(address(this), msg.sender, tokenId, amount);

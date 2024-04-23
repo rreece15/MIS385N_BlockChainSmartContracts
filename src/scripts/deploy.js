@@ -24,21 +24,25 @@ async function main() {
   );
   const balance = await deployer.getBalance();
   console.log("Account balance:", (balance).toString());
-  const Marketplace = await hre.ethers.getContractFactory("NFTMarket - NAME");
+  const Marketplace = await ethers.getContractFactory("Marketplace");
+  console.log("check");
+  const marketplace = await Marketplace.deploy()
+  console.log("check1");
+  await marketplace.deployed()
   // const Token = await ethers.getContractFactory("Token");
   // const token = await Token.deploy();
   // await token.deployed();
 
-  await Marketplace.deployed();
+  
 
-  console.log("Token address:", token.address);
+  console.log("Marketplace address:", marketplace.address);
   const data = {
-    address: Marketplace.address,
-    abi: JSON.parse(Marketplace.interface.format('json')),
+    address: marketplace.address,
+    abi: JSON.parse(marketplace.interface.format('json')),
   }
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(token);
+  saveFrontendFiles(marketplace);
 }
 
 function saveFrontendFiles(token) {
@@ -59,10 +63,10 @@ function saveFrontendFiles(token) {
     JSON.stringify(data)
   );
 
-  const TokenArtifact = artifacts.readArtifactSync("Token");
+  const TokenArtifact = artifacts.readArtifactSync("Marketplace");
 
   fs.writeFileSync(
-    path.join(contractsDir, "Token.json"),
+    path.join(contractsDir, "Marketplace.json"),
     JSON.stringify(TokenArtifact, null, 2)
   );
 }
