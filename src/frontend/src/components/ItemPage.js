@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import nftDummyData from '../static/nftData';
 import TopBar from './TopBar'; // Assuming TopBar has the necessary links and style
 import '../styling/ItemPage.css'; // Ensure this CSS matches the style of the Gallery for consistency
+import { useState } from 'react';
 
 const ItemPage = () => {
   const [data, updateData] = useState({});
