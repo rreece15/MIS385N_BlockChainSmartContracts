@@ -7,6 +7,7 @@ import '../styling/Gallery.css'; // Styling for the Gallery component
 import nftDummyData from '../static/nftData.js'
 import {ethers} from 'ethers';
 import { useWallet } from './WalletContext.js';
+import { useState } from 'react';
 
 const Gallery = () => {
   const { setUserAddress } = useWallet();
@@ -39,6 +40,47 @@ const Gallery = () => {
         setUserAddress(account);
     }
 }
+
+  const [data, updateData] = useState({});
+  const [dataFetched, updateFetched] = useState(false);
+
+
+  // async function getAllTokenData(tokenId) {
+  //   const ethers = require("ethers");
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const signer = provider.getSigner();
+    
+  //   let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer)
+  //   let transaction = await contract.getAllTokens(tokenId);
+
+
+  //   const items = await Promise.all(transaction.map(async (i) => {
+  //       var tokenURI = await contract.tokenURI(i.tokenId);
+  //       tokenURI = GetIpfsUrlFromPinata(tokenURI);
+  //       let meta = await axios.get(tokenURI);
+  //       meta = meta.data;
+
+  //       let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
+  //       let item = {
+  //           tokenId: i.tokenId.toNumber(),
+  //           seller: i.seller,
+  //           owner: i.owner,
+  //           image: meta.image,
+  //           name: meta.name,
+  //           description: meta.description,
+  //           amount: i.amount
+  //       }
+  //       return item;
+  //   }))
+
+  //   updateData(items);
+  //   updateFetched(true);
+// }
+
+  // if(!dataFetched){
+  //   // getAllTokenData();
+  // }
+
   
     return (
       <>
@@ -49,10 +91,14 @@ const Gallery = () => {
             {nftDummyData.map(nft => (
               <NftCard key={nft.id} nft={nft}/>
             ))}
+            {/* {data.map(nft => (
+              <NftCard key={nft.tokenId} nft={nft}/>
+            ))}  */}
           </div>
         </div>
       </>
     );
-  };
   
+
+  }
   export default Gallery;
