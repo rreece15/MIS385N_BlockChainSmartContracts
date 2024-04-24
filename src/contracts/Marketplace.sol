@@ -11,8 +11,8 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 contract Marketplace is ERC1155, IERC1155Receiver {
     // using Counters for Counters.Counter;
 
-    // tokenIds are assigned sequntially
-    uint256 private _tokenIds;
+    // tokenIDs are assigned sequntially
+    uint256 private _tokenIDs;
     // keeps track of saleCount
     uint256 private _itemsSold;
 
@@ -20,7 +20,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
     uint256 publishPrice = 0.001 ether;
 
     event MediaListedSuccess(
-        uint256 indexed tokenId,
+        uint256 indexed tokenID,
         address owner,
         address seller,
         uint256 price,
@@ -36,25 +36,25 @@ contract Marketplace is ERC1155, IERC1155Receiver {
         uint256 amountListed;
     }
 
-    // map tokenId to Media structure
+    // map tokenID to Media structure
     mapping(uint256 => Media) private idToMedia;
-    // map tokenId to URI for retrieval
+    // map tokenID to URI for retrieval
     mapping(uint256 => string) private _tokenURIs;
 
     // return URI
-    function uri(uint256 tokenId) public view override returns (string memory) {
-        return (_tokenURIs[tokenId]);
+    function uri(uint256 tokenID) public view override returns (string memory) {
+        return (_tokenURIs[tokenID]);
     }
 
     // set Token URI
-    function _setTokenURI(uint256 tokenId, string memory tokenURI) private {
-        _tokenURIs[tokenId] = tokenURI;
+    function _setTokenURI(uint256 tokenID, string memory tokenURI) private {
+        _tokenURIs[tokenID] = tokenURI;
     }
 
     // constructor sets owner of marketplace
     constructor() ERC1155("Unused") {
         owner = payable(msg.sender);
-        _tokenIds = 0;
+        _tokenIDs = 0;
         _itemsSold = 0;
     }
 
@@ -71,20 +71,20 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
     // public returns media map from most recently uploaded media
     function getLatestIdToMedia() public view returns (Media memory) {
-        uint256 currentTokenId = _tokenIds;
-        return idToMedia[currentTokenId];
+        uint256 currentTokenID = _tokenIDs;
+        return idToMedia[currentTokenID];
     }
 
     // return media from token ID
-    function getListedForTokenId(
-        uint256 tokenId
+    function getListedForTokenID(
+        uint256 tokenID
     ) public view returns (Media memory) {
-        return idToMedia[tokenId];
+        return idToMedia[tokenID];
     }
 
-    // return tokenId of current token
+    // return tokenID of current token
     function getCurrentToken() public view returns (uint256) {
-        return _tokenIds;
+        return _tokenIDs;
     }
 
     // create new Media; mints and updates token counters
@@ -97,14 +97,14 @@ contract Marketplace is ERC1155, IERC1155Receiver {
         require(price > 0, "price must be positive");
         require(amount > 0, "cannot create 0 instances");
 
-        _tokenIds++;
-        uint256 currentTokenId = _tokenIds;
-        _mint(msg.sender, currentTokenId, 1, "");
-        _setTokenURI(currentTokenId, tokenURI);
+        _tokenIDs++;
+        uint256 currentTokenID = _tokenIDs;
+        _mint(msg.sender, currentTokenID, 1, "");
+        _setTokenURI(currentTokenID, tokenURI);
 
-        _createMedia(currentTokenId, price, amount);
+        _createMedia(currentTokenID, price, amount);
 
-        return currentTokenId;
+        return currentTokenID;
     }
 
     // probably won't use but is required function to transfer
@@ -131,22 +131,22 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
     // creates media struct and  transfers ownership to marketplace
     function _createMedia(
-        uint256 tokenId,
+        uint256 tokenID,
         uint256 price,
         uint256 amount
     ) private {
-        idToMedia[tokenId] = Media(
-            tokenId,
+        idToMedia[tokenID] = Media(
+            tokenID,
             payable(address(this)),
             payable(msg.sender),
             price,
             amount
         );
 
-        transfer(msg.sender, address(this), tokenId, amount);
+        transfer(msg.sender, address(this), tokenID, amount);
 
         emit MediaListedSuccess(
-            tokenId,
+            tokenID,
             address(this),
             msg.sender,
             amount,
@@ -159,7 +159,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
     function transfer(
         address from,
         address to,
-        uint256 tokenId,
+        uint256 tokenID,
         uint256 amount
     ) public {
         // require(
@@ -167,26 +167,26 @@ contract Marketplace is ERC1155, IERC1155Receiver {
         //     "Transfer caller is not approved"
         // );
 
-        _safeTransferFrom(from, to, tokenId, amount, "");
+        _safeTransferFrom(from, to, tokenID, amount, "");
     }
 
     // batch transfer as property of ERC1155; may be unused
     function transferBatch(
         address from,
         address to,
-        uint256[] memory tokenIds,
+        uint256[] memory tokenIDs,
         uint256[] memory amounts
     ) public {
         // require(
         //     msg.sender == from || isApprovedForAll(from, msg.sender),
         //     "Transfer caller is not approved"
         // );
-        _safeBatchTransferFrom(from, to, tokenIds, amounts, "");
+        _safeBatchTransferFrom(from, to, tokenIDs, amounts, "");
     }
 
     // return all tokens as array of Media struct
     function getAllTokens() public view returns (Media[] memory) {
-        uint nftCount = _tokenIds;
+        uint nftCount = _tokenIDs;
         Media[] memory tokens = new Media[](nftCount);
 
         uint currentIndex = 0;
@@ -203,7 +203,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
     // return tokens owned by message sender
     function getMyTokens() public view returns (Media[] memory) {
-        uint totalItemCount = _tokenIds;
+        uint totalItemCount = _tokenIDs;
         uint itemCount = 0;
         uint currentIndex = 0;
 
@@ -234,7 +234,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
     // return tokens owned by message sender
     function getAvailableTokens() public view returns (Media[] memory) {
-        uint totalItemCount = _tokenIds;
+        uint totalItemCount = _tokenIDs;
         uint itemCount = 0;
         uint currentIndex = 0;
 
@@ -258,11 +258,11 @@ contract Marketplace is ERC1155, IERC1155Receiver {
     }
 
     // sell token from one user to the other
-    function executeSale(uint256 tokenId, uint256 amount) public payable {
-        uint price = idToMedia[tokenId].price;
-        address seller = idToMedia[tokenId].seller;
+    function executeSale(uint256 tokenID, uint256 amount) public payable {
+        uint price = idToMedia[tokenID].price;
+        address seller = idToMedia[tokenID].seller;
         require(
-            idToMedia[tokenId].amountListed >= amount,
+            idToMedia[tokenID].amountListed >= amount,
             "the requested quantity of this item is no longer available"
         );
 
@@ -271,15 +271,15 @@ contract Marketplace is ERC1155, IERC1155Receiver {
             "Please submit the asking price for the token"
         );
 
-        idToMedia[tokenId].amountListed =
-            idToMedia[tokenId].amountListed -
+        idToMedia[tokenID].amountListed =
+            idToMedia[tokenID].amountListed -
             amount; // = true;
-        idToMedia[tokenId].seller = payable(msg.sender);
+        idToMedia[tokenID].seller = payable(msg.sender);
         for (uint256 i = 0; i < amount; i++) {
             _itemsSold++;
         }
 
-        transfer(address(this), msg.sender, tokenId, amount);
+        transfer(address(this), msg.sender, tokenID, amount);
         setApprovalForAll(seller, true);
 
         payable(owner).transfer(publishPrice);
