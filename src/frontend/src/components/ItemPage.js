@@ -21,54 +21,54 @@ const ItemPage = () => {
     return <div>NFT not found</div>;
   }
 
-  async function getTokenData(tokenId) {
-    const ethers = require("ethers");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const addr = await signer.getAddress();
-    let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer)
+  // async function getTokenData(tokenId) {
+  //   const ethers = require("ethers");
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const signer = provider.getSigner();
+  //   const addr = await signer.getAddress();
+  //   let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer)
 
-    var tokenURI = await contract.tokenURI(tokenId);
-    const listedToken = await contract.getListedForTokenId(tokenId);
-    var meta = await axios.get(tokenURI);
-    meta = meta.data;
+  //   var tokenURI = await contract.tokenURI(tokenId);
+  //   const listedToken = await contract.getListedForTokenId(tokenId);
+  //   var meta = await axios.get(tokenURI);
+  //   meta = meta.data;
 
-    let item = {
-        tokenId: tokenId,
-        seller: listedToken.seller,
-        owner: listedToken.owner,
-        image: meta.image,
-        name: meta.name,
-        description: meta.description,
-        price: meta.price,
-        amount: listedToken.amount
-    }
+  //   let item = {
+  //       tokenId: tokenId,
+  //       seller: listedToken.seller,
+  //       owner: listedToken.owner,
+  //       image: meta.image,
+  //       name: meta.name,
+  //       description: meta.description,
+  //       price: meta.price,
+  //       amount: listedToken.amount
+  //   }
 
-    updateData(item);
-    updateFetched(true);
-    updateAddress(addr);
+  //   updateData(item);
+  //   updateFetched(true);
+  //   updateAddress(addr);
 
-  }
+  // }
 
-  async function buyToken(tokenId, amount) {
-    try{
-      const ethers = require("ethers");
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+  // async function buyToken(tokenId, amount) {
+  //   try{
+  //     const ethers = require("ethers");
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //     const signer = provider.getSigner();
 
-      let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer)
-      const saleprice = ethers.utils.parseUnits(data.price.toString(), 'ether');
-      updateMessage("Transaction in progress...");
+  //     let contract = new ethers.Contract(MarketplaceJSON.address, MarketplaceJSON.abi, signer)
+  //     const saleprice = ethers.utils.parseUnits(data.price.toString(), 'ether');
+  //     updateMessage("Transaction in progress...");
 
-      let transaction = await contract.executeSale(tokenId, amount, {value: saleprice});
-      await transaction.wait();
-      alert("Transaction complete!");
-      updateMessage("");
-    }
-    catch(e){
-      alert("Transaction failed. Please try again: " + e);
-    }
-  }
+  //     let transaction = await contract.executeSale(tokenId, amount, {value: saleprice});
+  //     await transaction.wait();
+  //     alert("Transaction complete!");
+  //     updateMessage("");
+  //   }
+  //   catch(e){
+  //     alert("Transaction failed. Please try again: " + e);
+  //   }
+  // }
 
   return (
     <>

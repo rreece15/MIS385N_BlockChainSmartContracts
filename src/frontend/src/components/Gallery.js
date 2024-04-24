@@ -8,6 +8,8 @@ import nftDummyData from '../static/nftData.js'
 import {ethers} from 'ethers';
 import { useWallet } from './WalletContext.js';
 import { useState } from 'react';
+import MarketplaceJSON from '../contracts/Marketplace.json';
+
 
 const Gallery = () => {
   const { setUserAddress } = useWallet();
