@@ -3,9 +3,12 @@ import React from 'react';
 import '../styling/TopBar.css'; // Styling for the TopBar component
 import DebaseLogo from '../static/images/debase_logo.png'
 import { useWallet } from './WalletContext';
+import UploadModal from './UploadModal';
+import { useState } from 'react';
 
 const TopBar = ({ onConnectWallet }) => {
   const { userAddress } = useWallet();
+  const [modalOpen, setModalOpen] = useState(false)
 
   return (
     <div className="topbar">
@@ -13,7 +16,10 @@ const TopBar = ({ onConnectWallet }) => {
         <img src={DebaseLogo} alt="Debase Logo" />
       </div>
       <div className="navigation">
-        {/* Placeholder for navigation items */}
+        <button style= {{backrounColor: 'gray'}} onClick = {() => setModalOpen(true)}>
+          Upload
+        </button>
+        <UploadModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         {userAddress ? (
                 <button disabled style={{ backgroundColor: 'gray' }}>Connected</button>
             ) : (
