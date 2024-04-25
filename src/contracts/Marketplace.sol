@@ -34,6 +34,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
         address payable seller;
         uint256 price;
         uint256 amountListed;
+        bool currentlyListed;
     }
 
     // map tokenID to Media structure
@@ -99,7 +100,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
         _tokenIDs++;
         uint256 currentTokenID = _tokenIDs;
-        _mint(msg.sender, currentTokenID, 1, "");
+        _mint(msg.sender, currentTokenID, amount, "");
         _setTokenURI(currentTokenID, tokenURI);
 
         _createMedia(currentTokenID, price, amount);
@@ -140,7 +141,8 @@ contract Marketplace is ERC1155, IERC1155Receiver {
             payable(address(this)),
             payable(msg.sender),
             price,
-            amount
+            amount,
+            true
         );
 
         transfer(msg.sender, address(this), tokenID, amount);
@@ -284,5 +286,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
         payable(owner).transfer(publishPrice);
         payable(seller).transfer(msg.value);
+
+        idToMedia[tokenID].currentlyListed = false;
     }
 }
