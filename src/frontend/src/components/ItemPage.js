@@ -75,7 +75,7 @@ const ItemPage = () => {
         name: stuff.name,
         description: stuff.description,
         price: stuff.price,
-        amount: stuff.amount,
+        amount: listedToken.amountListed.toNumber(),
         fileURL: stuff.fileURL
     }
 
