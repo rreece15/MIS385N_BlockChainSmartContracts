@@ -38,7 +38,7 @@ const ItemPage = () => {
     const id = 1;
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F';
+    const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5';
     const marketplaceABI = MarketplaceJSON.abi;
 
     let contract = new ethers.Contract(contractAddress, marketplaceABI, signer);

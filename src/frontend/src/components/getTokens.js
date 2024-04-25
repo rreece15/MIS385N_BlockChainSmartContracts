@@ -8,7 +8,7 @@ const PINATA_API = process.env.PINATA_API
 const PINATA_API_SECRET = process.env.PINATA_API_SECRET
 
 const web3 = new Web3('http://54.146.235.138:8546'); // Replace with your Ethereum node URL
-const contractAddress = '0x6498010be9903c50f0bbc396dF0b47f0be20030B'; // Replace with your contract address
+const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5'; // Replace with your contract address
 
 const MarketplaceContract = new web3.eth.Contract(MarketplaceABI, contractAddress);
 
