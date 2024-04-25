@@ -6,18 +6,18 @@ import axios from 'axios';
 
 // dotenv.config();
 
-const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
+// const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
 
 // const pinataSDK = require('@pinata/sdk');
 // const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
 
 // const web3 = new Web3('http://54.146.235.138:8546'); // Replace with your Ethereum node URL
 const web3 = new Web3(window.ethereum);
-const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F'; // Replace with your contract address
+const contractAddress = '0x6C6cFFBc5Bf9b3cffF21234F21B450e1c937B3E6'; // Replace with your contract address
 const remix_contractAddress = '0xCb5B59882550520F35E98528c4a6d21b1fC1dCe4';
 // const fs = require('fs')
 
-async function createMediaToken(name, description, imageURL, fileURL, price, amount) {
+async function createMediaToken(name, description, imageURL, fileURL, price, payment, amount) {
     try {
 
         const accounts = await web3.eth.getAccounts();
@@ -57,20 +57,9 @@ async function createMediaToken(name, description, imageURL, fileURL, price, amo
         console.log(inputData.price);
         console.log(inputData.amount);
 
-        // const web3 = new Web3('http://54.146.235.138:8546')
-
-        // console.log("dsajfha");
-        // const response = await fetch(ABIJSON);
-        // console.log("jsadsfa");
-        // const rawABI = await response.json();
-        // console.log("3");
-        // const contractABI = JSON.parse(rawABI);
-        // console.log("4");
         const contractABI = ABIJSON.abi;
-        console.log(1);
         const contract = new web3.eth.Contract(contractABI, contractAddress)
-        console.log(2);
-        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: fromAddress, value: 1, gasPrice: '2000000000', gas: '30000000' });
+        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: fromAddress, value: payment, gasPrice: '2000000000', gas: '30000000' });
 
         console.log("Successfully minted media.");
         console.log("Transaction hash: ", createTransaction.transactionHash);
@@ -86,11 +75,12 @@ function TokenCreator() {
     const [fileURL, setInput4] = useState('');
     const [amount, setInput5] = useState('');
     const [price, setInput6] = useState('');
+    const [payment, setInput7] = useState('');
 
     const handleCreateToken = () => {
         // Call the createERC1155Token function with inputs
         console.log("handled");
-        createMediaToken(tokenName, description, imageURL, fileURL, price, amount);
+        createMediaToken(tokenName, description, imageURL, fileURL, price, payment, amount);
     };
 
     return (
@@ -130,6 +120,12 @@ function TokenCreator() {
                 value={price}
                 onChange={(e) => setInput6(e.target.value)}
                 placeholder="Price"
+            />
+            <input
+                type="text"
+                value={payment}
+                onChange={(e) => setInput7(e.target.value)}
+                placeholder="Payment"
             />
             <button onClick={handleCreateToken}>Create Media Token</button>
         </div>

@@ -99,7 +99,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
 
         _tokenIDs++;
         uint256 currentTokenID = _tokenIDs;
-        _mint(msg.sender, currentTokenID, 1, "");
+        _mint(msg.sender, currentTokenID, amount, "");
         _setTokenURI(currentTokenID, tokenURI);
 
         _createMedia(currentTokenID, price, amount);
