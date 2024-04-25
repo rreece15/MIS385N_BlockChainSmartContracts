@@ -8,6 +8,7 @@ const NftCard = ({ nft }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
+    console.log(nft.id)
     navigate(`/item/${nft.id}`);
   }
 
