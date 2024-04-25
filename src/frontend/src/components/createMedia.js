@@ -12,7 +12,7 @@ const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
 // const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
 
 const web3 = new Web3('http://54.146.235.138:8546'); // Replace with your Ethereum node URL
-const contractAddress = '0xA03c41Db0fa4A6c3F804E2446d3369E4F3c1d15e'; // Replace with your contract address
+const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F'; // Replace with your contract address
 const remix_contractAddress = '0xCb5B59882550520F35E98528c4a6d21b1fC1dCe4';
 // const fs = require('fs')
 
@@ -63,8 +63,9 @@ async function createMediaToken(name, description, imageURL, fileURL, price, amo
         const contractABI = ABIJSON.abi;
         console.log(1);
         const contract = new web3.eth.Contract(contractABI, contractAddress)
+        web3.eth.accounts.wallet.add("0xc5c7eb157a1a49b57eb9d4bc7e34cdfe5f4d9f3be1197f8c4931a88ff4d18a67");
         console.log(2);
-        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: reece_wallet, gasPrice: '2000000000', gas: '30000000' });
+        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: reece_wallet, value: 1, gasPrice: '2000000000', gas: '30000000' });
 
         console.log("Successfully minted media.");
         console.log("Transaction hash: ", createTransaction.transactionHash);

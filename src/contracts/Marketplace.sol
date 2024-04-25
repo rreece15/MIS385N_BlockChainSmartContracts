@@ -17,7 +17,7 @@ contract Marketplace is ERC1155, IERC1155Receiver {
     uint256 private _itemsSold;
 
     address payable owner;
-    uint256 publishPrice = 0.001 ether;
+    uint256 publishPrice = 0.000000000000000001 ether;
 
     event MediaListedSuccess(
         uint256 indexed tokenID,
