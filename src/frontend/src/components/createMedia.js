@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import ABIJSON from '../contracts/Marketplace.json'; // Assuming you have the contract ABI in a file
 import Web3 from 'web3';
 import axios from 'axios';
+// import dotenv from 'dotenv';
+
+// dotenv.config();
 
 const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
 
@@ -10,12 +13,13 @@ const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
 
 const web3 = new Web3('http://54.146.235.138:8546'); // Replace with your Ethereum node URL
 const contractAddress = '0xA03c41Db0fa4A6c3F804E2446d3369E4F3c1d15e'; // Replace with your contract address
+const remix_contractAddress = '0xCb5B59882550520F35E98528c4a6d21b1fC1dCe4';
 // const fs = require('fs')
 
 async function createMediaToken(name, description, imageURL, fileURL, price, amount) {
     try {
-        console.log(process.env.PINATA_API)
-        console.log(process.env.PINATA_API_SECRET)
+        // console.log(process.env.PINATA_API)
+        // console.log(process.env.PINATA_API_SECRET)
         const inputData = {
             name: name,
             description: description,
@@ -25,33 +29,42 @@ async function createMediaToken(name, description, imageURL, fileURL, price, amo
             amount: parseInt(amount),
         };
 
+        console.log('Input Data: ', inputData);
+
         const jsonData = JSON.stringify(inputData);
-        console.log("here1")
         const pinataEndpoint = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
 
         const pinataConfig = {
             headers: {
                 'Content-Type': 'application/json',
-                'pinata_api_key': process.env.PINATA_API,
-                'pinata_secret_api_key': process.env.PINATA_API_SECRET
+                'pinata_api_key': "ecf152a26396b4af8b0e",
+                'pinata_secret_api_key': "ddb768a9219ad9e58eee08e2d7a12354f2a275b5343b6338abd33b493c05eec2"
             }
         };
-        console.log("here2")
 
         const pinataResponse = await axios.post(pinataEndpoint, jsonData, pinataConfig);
         // const pinataResponse = await pinata.pinJSONToIPFS(jsonData)
         const ipfsHash = pinataResponse.data.IpfsHash;
         const ipfsURI = `ipfs://${ipfsHash}`
 
+        console.log(ipfsURI);
+        console.log(inputData.price);
+        console.log(inputData.amount);
+
         // const web3 = new Web3('http://54.146.235.138:8546')
 
-        const response = await fetch(ABIJSON);
-        const rawABI = await response.json();
-        const contractABI = JSON.parse(rawABI);
-
+        // console.log("dsajfha");
+        // const response = await fetch(ABIJSON);
+        // console.log("jsadsfa");
+        // const rawABI = await response.json();
+        // console.log("3");
+        // const contractABI = JSON.parse(rawABI);
+        // console.log("4");
+        const contractABI = ABIJSON.abi;
+        console.log(1);
         const contract = new web3.eth.Contract(contractABI, contractAddress)
-
-        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData[price], inputData[amount]).send({from: reece_wallet});
+        console.log(2);
+        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: reece_wallet, gasPrice: '2000000000', gas: '30000000' });
 
         console.log("Successfully minted media.");
         console.log("Transaction hash: ", createTransaction.transactionHash);
