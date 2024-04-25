@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ABIJSON from '../contracts/Marketplace.json'; // Assuming you have the contract ABI in a file
 import Web3 from 'web3';
 import axios from 'axios';
+import '../styling/UploadModal.css';
 // import dotenv from 'dotenv';
 
 // dotenv.config();
@@ -94,7 +95,8 @@ function TokenCreator() {
     };
 
     return (
-        <div>
+        <div className="modal-overlay">
+        <div className="modal_content">
             <input
                 type="text"
                 value={tokenName}
@@ -133,6 +135,7 @@ function TokenCreator() {
             />
             <button onClick={handleCreateToken}>Create Media Token</button>
             <button onClick={() => console.log('ajkdl;faj')}>Close</button>
+        </div>
         </div>
     );
 }
