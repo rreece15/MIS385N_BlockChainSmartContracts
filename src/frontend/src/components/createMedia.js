@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
 import ABIJSON from '../contracts/Marketplace.json'; // Assuming you have the contract ABI in a file
+import '../styling/UploadModal.css'  // Make sure to create appropriate CSS
 import Web3 from 'web3';
 import axios from 'axios';
-// import dotenv from 'dotenv';
 
-// dotenv.config();
-
-// const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
-
-// const pinataSDK = require('@pinata/sdk');
-// const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
-
-// const web3 = new Web3('http://54.146.235.138:8546'); // Replace with your Ethereum node URL
 const web3 = new Web3(window.ethereum);
-const contractAddress = '0x6C6cFFBc5Bf9b3cffF21234F21B450e1c937B3E6'; // Replace with your contract address
+const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5'; // Replace with your contract address
 const remix_contractAddress = '0xCb5B59882550520F35E98528c4a6d21b1fC1dCe4';
-// const fs = require('fs')
+const PINATA_API = "ecf152a26396b4af8b0e";
+const PINATA_API_SECRET = "ddb768a9219ad9e58eee08e2d7a12354f2a275b5343b6338abd33b493c05eec2";
 
 async function createMediaToken(name, description, imageURL, fileURL, price, payment, amount) {
     try {
@@ -24,8 +17,6 @@ async function createMediaToken(name, description, imageURL, fileURL, price, pay
         console.log(accounts);
         const fromAddress = accounts[0];
         console.log(fromAddress);
-        // console.log(process.env.PINATA_API)
-        // console.log(process.env.PINATA_API_SECRET)
         const inputData = {
             name: name,
             description: description,
@@ -43,15 +34,14 @@ async function createMediaToken(name, description, imageURL, fileURL, price, pay
         const pinataConfig = {
             headers: {
                 'Content-Type': 'application/json',
-                'pinata_api_key': "ecf152a26396b4af8b0e",
-                'pinata_secret_api_key': "ddb768a9219ad9e58eee08e2d7a12354f2a275b5343b6338abd33b493c05eec2"
+                'pinata_api_key': PINATA_API,
+                'pinata_secret_api_key': PINATA_API_SECRET
             }
         };
 
         const pinataResponse = await axios.post(pinataEndpoint, jsonData, pinataConfig);
-        // const pinataResponse = await pinata.pinJSONToIPFS(jsonData)
         const ipfsHash = pinataResponse.data.IpfsHash;
-        const ipfsURI = `ipfs://${ipfsHash}`
+        const ipfsURI = `ipfs://${ipfsHash}`;
 
         console.log(ipfsURI);
         console.log(inputData.price);
@@ -84,50 +74,52 @@ function TokenCreator() {
     };
 
     return (
-        <div>
-            <input
-                type="text"
-                value={tokenName}
-                onChange={(e) => setInput1(e.target.value)}
-                placeholder="Name"
-            />
-            <input
-                type="text"
-                value={description}
-                onChange={(e) => setInput2(e.target.value)}
-                placeholder="Description"
-            />
-            <input
-                type="text"
-                value={imageURL}
-                onChange={(e) => setInput3(e.target.value)}
-                placeholder="Image URL"
-            />
-            <input
-                type="text"
-                value={fileURL}
-                onChange={(e) => setInput4(e.target.value)}
-                placeholder="File URL"
-            />
-            <input
-                type="text"
-                value={amount}
-                onChange={(e) => setInput5(e.target.value)}
-                placeholder="Amount"
-            />
-            <input
-                type="text"
-                value={price}
-                onChange={(e) => setInput6(e.target.value)}
-                placeholder="Price"
-            />
-            <input
-                type="text"
-                value={payment}
-                onChange={(e) => setInput7(e.target.value)}
-                placeholder="Payment"
-            />
-            <button onClick={handleCreateToken}>Create Media Token</button>
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <input
+                    type="text"
+                    value={tokenName}
+                    onChange={(e) => setInput1(e.target.value)}
+                    placeholder="Name"
+                />
+                <input
+                    type="text"
+                    value={description}
+                    onChange={(e) => setInput2(e.target.value)}
+                    placeholder="Description"
+                />
+                <input
+                    type="text"
+                    value={imageURL}
+                    onChange={(e) => setInput3(e.target.value)}
+                    placeholder="Image URL"
+                />
+                <input
+                    type="text"
+                    value={fileURL}
+                    onChange={(e) => setInput4(e.target.value)}
+                    placeholder="File URL"
+                />
+                <input
+                    type="text"
+                    value={amount}
+                    onChange={(e) => setInput5(e.target.value)}
+                    placeholder="Amount"
+                />
+                <input
+                    type="text"
+                    value={price}
+                    onChange={(e) => setInput6(e.target.value)}
+                    placeholder="Price"
+                />
+                <input
+                    type="text"
+                    value={payment}
+                    onChange={(e) => setInput7(e.target.value)}
+                    placeholder="Payment"
+                />
+                <button onClick={handleCreateToken}>Create Media Token</button>
+            </div>
         </div>
     );
 }
