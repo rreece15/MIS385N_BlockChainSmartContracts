@@ -74,52 +74,45 @@ function TokenCreator() {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <input
-                    type="text"
-                    value={tokenName}
-                    onChange={(e) => setInput1(e.target.value)}
-                    placeholder="Name"
-                />
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setInput2(e.target.value)}
-                    placeholder="Description"
-                />
-                <input
-                    type="text"
-                    value={imageURL}
-                    onChange={(e) => setInput3(e.target.value)}
-                    placeholder="Image URL"
-                />
-                <input
-                    type="text"
-                    value={fileURL}
-                    onChange={(e) => setInput4(e.target.value)}
-                    placeholder="File URL"
-                />
-                <input
-                    type="text"
-                    value={amount}
-                    onChange={(e) => setInput5(e.target.value)}
-                    placeholder="Amount"
-                />
-                <input
-                    type="text"
-                    value={price}
-                    onChange={(e) => setInput6(e.target.value)}
-                    placeholder="Price"
-                />
-                <input
-                    type="text"
-                    value={payment}
-                    onChange={(e) => setInput7(e.target.value)}
-                    placeholder="Payment"
-                />
-                <button onClick={handleCreateToken}>Create Media Token</button>
-            </div>
+        <div>
+            <input
+                type="text"
+                value={tokenName}
+                onChange={(e) => setInput1(e.target.value)}
+                placeholder="Name"
+            />
+            <input
+                type="text"
+                value={description}
+                onChange={(e) => setInput2(e.target.value)}
+                placeholder="Description"
+            />
+            <input
+                type="text"
+                value={imageURL}
+                onChange={(e) => setInput3(e.target.value)}
+                placeholder="Image URL"
+            />
+            <input
+                type="text"
+                value={fileURL}
+                onChange={(e) => setInput4(e.target.value)}
+                placeholder="File URL"
+            />
+            <input
+                type="text"
+                value={amount}
+                onChange={(e) => setInput5(e.target.value)}
+                placeholder="Amount"
+            />
+            <input
+                type="text"
+                value={price}
+                onChange={(e) => setInput6(e.target.value)}
+                placeholder="Price"
+            />
+            <button onClick={handleCreateToken}>Create Media Token</button>
+            <button onClick={() => console.log('ajkdl;faj')}>Close</button>
         </div>
     );
 }

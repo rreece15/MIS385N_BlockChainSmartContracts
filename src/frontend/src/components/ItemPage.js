@@ -15,11 +15,11 @@ const PINATA_API_SECRET = process.env.PINATA_API_SECRET
 const ItemPage = () => {
   const [data, updateData] = useState({});
   const [dataFetched, updateFetched] = useState(false);
-  const [address, updateAddress] = useState("0x");
+  const [currAddress, updateAddress] = useState("0x");
   const [message, updateMessage] = useState("");
 
   const { id } = useParams();
-  const nft = nftDummyData.find(nft => nft.id.toString() === id);
+  // const nft = nftDummyData.find(nft => nft.id.toString() === id);
 
   useEffect(() => {
       if (dataFetched == false) {
@@ -30,15 +30,18 @@ const ItemPage = () => {
   
 
 
-  if (!nft) {
-    return <div>NFT not found</div>;
-  }
+  // if (!nft) {
+  //   return <div>NFT not found</div>;
+  // }
 
   async function getTokenData() {
-    const id = 1;
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5';
+    // new address: 0xe87522aB2391Cdc2C87252964E2Be9F1046578B5
+    // old address: 0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F
+    const currAddress = await signer.getAddress();
+    updateAddress(currAddress);
+    const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F';
     const marketplaceABI = MarketplaceJSON.abi;
 
     let contract = new ethers.Contract(contractAddress, marketplaceABI, signer);
@@ -63,7 +66,7 @@ const ItemPage = () => {
 
     const ipfsResponse = await axios.get(pinataUrl, pinataConfig);
     const { name, description, imageURL, fileURL, price, amount } = ipfsResponse.data;
-    const stuff = { tokenId: nft.tokenId, name, description, imageURL, fileURL, price, amount };
+    const stuff = { tokenId: id, name, description, imageURL, fileURL, price, amount };
     console.log(stuff);
 
     let item = {
@@ -84,9 +87,10 @@ const ItemPage = () => {
 
   }
 
+  
+
   async function buyToken(tokenId, amount) {
     try{
-      const ethers = require("ethers");
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       console.log("signer: ", signer);
@@ -96,11 +100,13 @@ const ItemPage = () => {
 
       let contract = new ethers.Contract(contractAddress, marketplaceABI, signer);
 
-      const saleprice = ethers.utils.parseUnits(data.price.toString(), 'ether');
-      // updateMessage("Transaction in progress...");
+      const saleprice = ethers.utils.parseUnits(data.price.toString(), 'wei');
+      updateMessage("Transaction in progress...");
+      // get gas price
+      const gasPrice = saleprice * amount;
 
-      let transaction = await contract.executeSale(tokenId, amount, {value: saleprice});
-      // await transaction.wait();
+      let transaction = await contract.executeSale(tokenId, amount, {value: saleprice, gasPrice: gasPrice.toString()});
+      await transaction.wait();
       alert("Transaction complete!");
       updateMessage("");
     }
@@ -130,6 +136,7 @@ const ItemPage = () => {
   // );
 
 
+
   return (
     <>
       <TopBar />
@@ -145,10 +152,21 @@ const ItemPage = () => {
             <p>Seller: {data.seller}</p>
             <p>Amount: {data.amount}</p>
             <div>
-            {/* { currAddress != data.owner && currAddress != data.seller ?
-                        <button onClick={() => buyToken(id)}>Buy this token</button>
-                        : <p>{"You are the owner of this NFT"}</p>
-                    } */}
+            { currAddress != data.owner && currAddress != data.seller ?
+                        (<button onClick={() => buyToken(id, 1)}>Buy this token</button>)
+                        : (
+                        <div>
+                        <p>You are the owner of this token</p>
+                        <p>
+  <a href={data.fileURL} target="_blank" rel="noopener noreferrer">
+    Access File
+  </a>
+</p>
+
+                        </div>
+                      )
+
+                    }
             </div>
             <p>{message}</p>
           </div>

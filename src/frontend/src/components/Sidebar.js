@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '../styling/Sidebar.css'; // Importing the CSS for styling
 
-const Sidebar = () => {
+const Sidebar = ({setMyToken}) => {
   const [searchToken, setSearchToken] = useState('');
   const [searchOwner, setSearchOwner] = useState('');
   const [filter, setFilter] = useState('');
@@ -22,12 +22,19 @@ const Sidebar = () => {
     // Implement filter logic here
   };
 
+  const handleCheckboxChange = (e) => {
+    setMyToken(e.target.checked);
+    console.log("*****************")
+    console.log(e.target.checked);
+    console.log("*****************")
+  }
+
   return (
     <div className="sidebar">
       <div className="content-switch">
         {/* Assuming you have a toggle switch component */}
         <label>My Content</label>
-        <input type="checkbox" id="contentToggle" />
+        <input type="checkbox" id="contentToggle" onChange={handleCheckboxChange}/>
       </div>
       <div className="search">
         {
