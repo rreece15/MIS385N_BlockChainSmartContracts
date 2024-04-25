@@ -10,6 +10,7 @@ import { useWallet } from './WalletContext.js';
 import { useState } from 'react';
 import MarketplaceJSON from '../contracts/Marketplace.json';
 import axios from "axios";
+
 const PINATA_API = process.env.PINATA_API
 const PINATA_API_SECRET = process.env.PINATA_API_SECRET
 
@@ -59,7 +60,7 @@ const Gallery = () => {
   async function getAllTokenData() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F';
+      const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5';
       
       const contract = new ethers.Contract(contractAddress, MarketplaceJSON.abi, signer);
 
@@ -120,7 +121,7 @@ const Gallery = () => {
   async function getMyTokens() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F';
+    const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5';
     
     const contract = new ethers.Contract(contractAddress, MarketplaceJSON.abi, signer);
 

@@ -8,8 +8,13 @@ import { useState } from 'react';
 import MarketplaceJSON from '../contracts/Marketplace.json';
 import axios from 'axios';
 import { ethers } from 'ethers';
+
+import { Magic } from 'magic-sdk';
+
 const PINATA_API = process.env.PINATA_API
 const PINATA_API_SECRET = process.env.PINATA_API_SECRET
+const MAGIC_API = "pk_live_B73ED313176B22C7";
+const MAGIC_API_SECRET = "sk_live_E4DCE2E4BF4E724C";
 
 
 const ItemPage = () => {
@@ -41,7 +46,7 @@ const ItemPage = () => {
     // old address: 0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F
     const currAddress = await signer.getAddress();
     updateAddress(currAddress);
-    const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F';
+    const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5';
     const marketplaceABI = MarketplaceJSON.abi;
 
     let contract = new ethers.Contract(contractAddress, marketplaceABI, signer);
@@ -87,15 +92,23 @@ const ItemPage = () => {
 
   }
 
-  
-
+  async function Verify(emailAddress) {
+    const magic = new Magic(MAGIC_API)
+    try {
+      await magic.auth.loginWithMagicLink({ email: emailAddress });
+      // If verification succeeds, open the link
+      window.open(data.fileURL, "_blank", "noopener noreferrer");
+    } catch (e) {
+      console.error("Magic Error: ", e);
+    }
+  }
   async function buyToken(tokenId, amount) {
     try{
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       console.log("signer: ", signer);
    
-      const contractAddress = '0x0B13d67EA1704370921ED3CdC9f8D2Be0A07ec9F';
+      const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5';
       const marketplaceABI = MarketplaceJSON.abi;
 
       let contract = new ethers.Contract(contractAddress, marketplaceABI, signer);
@@ -114,28 +127,6 @@ const ItemPage = () => {
       alert("Transaction failed. Please try again: " + e);
     }
   }
-
-  // return (
-  //   <>
-  //     <TopBar />
-  //     <div className="nft-detail-page">
-  //       <div className="nft-detail-container">
-  //         <Link to="/" className="back-to-gallery">Back to Gallery</Link>
-  //         <div className="nft-detail">
-  //           <h2>{nft.title}</h2>
-  //           <img src={nft.imageUrl} alt={nft.title} />
-  //           <p>{nft.description}</p>
-  //           <p>Price: {nft.price}</p>
-  //           <button onClick={getTokenData}>
-  //             Purchase
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </>
-  // );
-
-
 
   return (
     <>
@@ -158,7 +149,7 @@ const ItemPage = () => {
                         <div>
                         <p>You are the owner of this token</p>
                         <p>
-  <a href={data.fileURL} target="_blank" rel="noopener noreferrer">
+  <a href="#" onClick = {()=>Verify("reece.riherd@gmail.com")} target="_blank" rel="noopener noreferrer">
     Access File
   </a>
 </p>

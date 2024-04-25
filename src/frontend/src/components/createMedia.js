@@ -111,6 +111,12 @@ function TokenCreator() {
                 onChange={(e) => setInput6(e.target.value)}
                 placeholder="Price"
             />
+            <input
+                type="text"
+                value={payment}
+                onChange={(e) => setInput7(e.target.value)}
+                placeholder="Payment"
+            />
             <button onClick={handleCreateToken}>Create Media Token</button>
             <button onClick={() => console.log('ajkdl;faj')}>Close</button>
         </div>
