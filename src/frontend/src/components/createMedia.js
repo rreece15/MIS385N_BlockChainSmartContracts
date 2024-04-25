@@ -3,6 +3,8 @@ import ABIJSON from '../contracts/Marketplace.json'; // Assuming you have the co
 import '../styling/UploadModal.css'  // Make sure to create appropriate CSS
 import Web3 from 'web3';
 import axios from 'axios';
+import '../styling/UploadModal.css';
+// import dotenv from 'dotenv';
 
 const web3 = new Web3(window.ethereum);
 const contractAddress = '0xe87522aB2391Cdc2C87252964E2Be9F1046578B5'; // Replace with your contract address
@@ -49,7 +51,13 @@ async function createMediaToken(name, description, imageURL, fileURL, price, pay
 
         const contractABI = ABIJSON.abi;
         const contract = new web3.eth.Contract(contractABI, contractAddress)
-        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: fromAddress, value: payment, gasPrice: '2000000000', gas: '30000000' });
+        console.log(2);
+        // get suggested gas price
+        const gasPrice = await web3.eth.getGasPrice();
+        // convert to int and scale by amount
+        const gasPriceNum = parseInt(gasPrice) * inputData.amount;
+        console.log(gasPriceNum);
+        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: fromAddress, value: 1, gasPrice: gasPriceNum.toString(), gas: '30000000' });
 
         console.log("Successfully minted media.");
         console.log("Transaction hash: ", createTransaction.transactionHash);
@@ -74,7 +82,8 @@ function TokenCreator() {
     };
 
     return (
-        <div>
+        <div className="modal-overlay">
+        <div className="modal_content">
             <input
                 type="text"
                 value={tokenName}
@@ -119,6 +128,7 @@ function TokenCreator() {
             />
             <button onClick={handleCreateToken}>Create Media Token</button>
             <button onClick={() => console.log('ajkdl;faj')}>Close</button>
+        </div>
         </div>
     );
 }

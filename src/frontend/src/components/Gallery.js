@@ -66,7 +66,7 @@ const Gallery = () => {
 
       try {
           console.log("Fetching all tokens");
-          let tokens = await contract.getAllTokens();
+          let tokens = await contract.getAvailableTokens();
           console.log(tokens);
 
           const items = await Promise.all(tokens.map(async (token) => {

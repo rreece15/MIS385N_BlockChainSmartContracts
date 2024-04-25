@@ -67,6 +67,12 @@ const Sidebar = ({setMyToken}) => {
             <label>
               <input type="checkbox" /> Movie Tickets
             </label>
+            <label>
+              <input type="checkbox" /> Books
+            </label>
+            <label>
+              <input type="checkbox" /> Misc.
+            </label>
             {/* ... other filter options ... */}
           </div>
         </div>
