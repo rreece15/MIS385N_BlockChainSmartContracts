@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import '../styling/Sidebar.css'; // Importing the CSS for styling
 
-import TokenCreator from './createMedia';
-
 const Sidebar = () => {
   const [searchToken, setSearchToken] = useState('');
   const [searchOwner, setSearchOwner] = useState('');
@@ -33,7 +31,6 @@ const Sidebar = () => {
       </div>
       <div className="search">
         {
-          <TokenCreator />
           /* <input
           type="text"
           placeholder="Token ID"

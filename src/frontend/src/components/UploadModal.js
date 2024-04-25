@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styling/UploadModal.css'  // Make sure to create appropriate CSS
+import TokenCreator from './createMedia';
 
 const UploadModal = ({ isOpen, onClose }) => {
     const [imageURL, setImageURL] = useState('');
@@ -21,53 +22,7 @@ const UploadModal = ({ isOpen, onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>Add New Item</h2>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Image URL"
-                        value={imageURL}
-                        onChange={e => setImageURL(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Description"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Price"
-                        value={price}
-                        onChange={e => setPrice(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Amount"
-                        value={amount}
-                        onChange={e => setAmount(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="File URL"
-                        value={fileURL}
-                        onChange={e => setFileURL(e.target.value)}
-                        required
-                    />
-                    <button type="submit">Submit</button>
-                </form>
-                <button onClick={onClose}>Close</button>
+                <TokenCreator />
             </div>
         </div>
     );
