@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import ABIJSON from '../contracts/Marketplace.json'; // Assuming you have the contract ABI in a file
 import Web3 from 'web3';
+import axios from 'axios';
 
 const reece_wallet = "0x2aEA1B5ad67CBbF5B15762912081088527f389c4";
-
-const axios = require('axios');
 
 // const pinataSDK = require('@pinata/sdk');
 // const pinata = new pinataSDK({ pinataJWTKey: 'yourPinataJWTKey'});
@@ -15,6 +14,8 @@ const contractAddress = '0xA03c41Db0fa4A6c3F804E2446d3369E4F3c1d15e'; // Replace
 
 async function createMediaToken(name, description, imageURL, fileURL, price, amount) {
     try {
+        console.log(process.env.PINATA_API)
+        console.log(process.env.PINATA_API_SECRET)
         const inputData = {
             name: name,
             description: description,
@@ -25,7 +26,7 @@ async function createMediaToken(name, description, imageURL, fileURL, price, amo
         };
 
         const jsonData = JSON.stringify(inputData);
-
+        console.log("here1")
         const pinataEndpoint = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
 
         const pinataConfig = {
@@ -35,6 +36,7 @@ async function createMediaToken(name, description, imageURL, fileURL, price, amo
                 'pinata_secret_api_key': process.env.PINATA_API_SECRET
             }
         };
+        console.log("here2")
 
         const pinataResponse = await axios.post(pinataEndpoint, jsonData, pinataConfig);
         // const pinataResponse = await pinata.pinJSONToIPFS(jsonData)
