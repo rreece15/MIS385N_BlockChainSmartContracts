@@ -22,7 +22,7 @@ const UploadModal = ({ isOpen, onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <TokenCreator />
+                <TokenCreator isOpen={isOpen} onClose={onClose}/>
             </div>
         </div>
     );
