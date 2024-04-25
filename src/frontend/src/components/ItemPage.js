@@ -113,28 +113,6 @@ const ItemPage = () => {
     }
   }
 
-  // return (
-  //   <>
-  //     <TopBar />
-  //     <div className="nft-detail-page">
-  //       <div className="nft-detail-container">
-  //         <Link to="/" className="back-to-gallery">Back to Gallery</Link>
-  //         <div className="nft-detail">
-  //           <h2>{nft.title}</h2>
-  //           <img src={nft.imageUrl} alt={nft.title} />
-  //           <p>{nft.description}</p>
-  //           <p>Price: {nft.price}</p>
-  //           <button onClick={getTokenData}>
-  //             Purchase
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </>
-  // );
-
-
-
   return (
     <>
       <TopBar />
@@ -142,33 +120,21 @@ const ItemPage = () => {
         <div className="nft-detail-container">
           <Link to="/" className="back-to-gallery">Back to Gallery</Link>
           <div className="nft-detail">
-            <h2>{data.title}</h2>
-            <img src={data.imageURL} alt={data.title} />
+            <h2>{data.name}</h2>
+            <img src={data.imageURL} alt={data.name || 'NFT Image'} />
             <p>{data.description}</p>
-            <p>Price: {data.price + "WEI"}</p>
+            <p>Price: {data.price} WEI</p>
             <p>Owner: {data.owner}</p>
             <p>Seller: {data.seller}</p>
             <p>Amount: {data.amount}</p>
-            <div>
             { currAddress != data.owner && currAddress != data.seller ?
                         (<button onClick={() => buyToken(id, 1)}>Buy this token</button>)
                         : (
                         <div>
                         <p>You are the owner of this token</p>
-                        <p>
-  <a href={data.fileURL} target="_blank" rel="noopener noreferrer">
-    Access File
-  </a>
-</p>
-
-                        </div>
-                      )
-
-                    }
-            </div>
-            <p>{message}</p>
+                        </div>)}
+            <a href={data.fileURL} target="_blank" rel="noopener noreferrer">Access File</a>
           </div>
-
         </div>
       </div>
     </>

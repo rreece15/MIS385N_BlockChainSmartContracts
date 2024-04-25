@@ -71,7 +71,12 @@ async function createMediaToken(name, description, imageURL, fileURL, price, amo
         console.log(1);
         const contract = new web3.eth.Contract(contractABI, contractAddress)
         console.log(2);
-        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: fromAddress, value: 1, gasPrice: '2000000000', gas: '30000000' });
+        // get suggested gas price
+        const gasPrice = await web3.eth.getGasPrice();
+        // convert to int and scale by amount
+        const gasPriceNum = parseInt(gasPrice) * inputData.amount;
+        console.log(gasPriceNum);
+        const createTransaction = await contract.methods.createMedia(ipfsURI, inputData.price, inputData.amount).send({from: fromAddress, value: 1, gasPrice: gasPriceNum.toString(), gas: '30000000' });
 
         console.log("Successfully minted media.");
         console.log("Transaction hash: ", createTransaction.transactionHash);
