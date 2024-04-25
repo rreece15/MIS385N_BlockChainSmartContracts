@@ -132,6 +132,7 @@ function TokenCreator() {
                 placeholder="Price"
             />
             <button onClick={handleCreateToken}>Create Media Token</button>
+            <button onClick={() => console.log('ajkdl;faj')}>Close</button>
         </div>
     );
 }
